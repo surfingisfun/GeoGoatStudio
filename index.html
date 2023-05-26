@@ -1,37 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    </head>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
+  </head>
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            renderer="logarithmicDepthBuffer: true;"
-            embedded
-            loading-screen="enabled: false;"
-            arjs="sourceType: webcam; debugUIEnabled: false; simulatedLongitude: -119.701004; simulatedLatitude: 34.410861;"
-        >
-            <a-assets>
-                <a-asset-item
-                    id="Goat"
-                    src="https://github.com/surfingisfun/GeoGoatStudio/raw/main/Goat.glb"
-                ></a-asset-item>
-            </a-assets>
+  <body style="margin: 0px; overflow: hidden;">
+    <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false;'>
+      <a-marker preset='custom' type='pattern' url='pattern-marker.patt' emitevents="true" id="animated-marker">
+        <a-entity
+          look-at="[gps-camera]"
+          scale="0.012567645829258286 0.012567645829258286 0.012567645829258286"
+          gps-entity-place="latitude: 34.410861; longitude: -119.701004;"
+          obj-model="obj: url(https://github.com/surfingisfun/GeoGoatStudio/raw/main/Goat.obj)"
+        ></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+    <script>
+      // get a reference to the marker
+      const marker = document.querySelector("#animated-marker");
 
-            <a-entity
-                look-at="[gps-camera]"
-                animation-mixer="loop: repeat"
-                gltf-model="#Goat"
-                scale="0.012567645829258286 0.012567645829258286 0.012567645829258286"
-                gps-entity-place="latitude: 34.410861; longitude: -119.701004;"
-            ></a-entity>
-
-            <a-camera gps-camera rotation-reader></a-camera>
-        </a-scene>
-    </body>
+      // listen for the marker to be found and lost
+      marker.addEventListener("markerFound", (e) => {
+        console.log("markerFound");
+      });
+      marker.addEventListener("markerLost", (e) => {
+        console.log("markerLost");
+      });
+    </script>
+  </body>
 </html>
